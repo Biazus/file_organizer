@@ -1,0 +1,23 @@
+# Arquivo de configuração global
+paths:
+  watch_folders:
+    - "C:/Users/Miller/Downloads"
+  output_folder: "C:/Users/Miller/Organized"
+
+behavior:
+  mode_default: dry # options: dry, simulation, active
+  move_strategy: move  # opções: move, copy
+  confidence_threshold: 0.8
+  quarantine_folder: "C:/Users/Miller/Organized/Quarentena"
+
+security:
+  blacklist:
+    - "C:/Program Files"
+    - "C:/Windows"
+    - "C:/Users/Miller/AppData"
+  dry_run_enabled_by_default: true
+
+classification:
+  use_ai: true
+  fallback: heuristics
+  default_labels: ["documento", "instalador", "jogo", "launcher", "imagem", "vídeo", "música"]
