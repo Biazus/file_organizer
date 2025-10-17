@@ -1,23 +1,163 @@
-# Arquivo de configuração global
+# ================================================================
+# CONFIGURAÇÃO GERAL - ORGANIZADOR INTELIGENTE DE ARQUIVOS
+# ================================================================
+# Este arquivo controla todas as opções principais do sistema.
+# Você pode definir: pastas monitoradas, comportamento, IA e regras de segurança.
+# ================================================================
+
+# ---------------------------------------------------------------
+# Pastas Monitoradas e Pastas de Saída
+# ---------------------------------------------------------------
 paths:
+  # Quais pastas monitorar (pode ser mais de uma)
   watch_folders:
     - "C:/Users/Miller/Downloads"
+    - "C:/Users/Miller/Desktop"
+
+  # Onde salvar os arquivos organizados
   output_folder: "C:/Users/Miller/Organized"
 
-behavior:
-  mode_default: dry # options: dry, simulation, active
-  move_strategy: move  # opções: move, copy
-  confidence_threshold: 0.8
+  # Pasta temporária (opcional)
+  temp_folder: "C:/Users/Miller/Organized/_temp"
+
+  # Pasta para arquivos duvidosos (classificação de baixa confiança)
   quarantine_folder: "C:/Users/Miller/Organized/Quarentena"
 
+# ---------------------------------------------------------------
+# Comportamento e Execução
+# ---------------------------------------------------------------
+behavior:
+  # Modo padrão de execução: dry, active, ou apply
+  mode_default: "dry"
+
+  # Estratégia: mover ou copiar arquivos
+  move_strategy: "move"  # opções: move, copy
+
+  # Nível de confiança mínimo da IA para mover automaticamente
+  confidence_threshold: 0.8
+
+  # Tempo de espera (em segundos) antes de mover arquivos recém criados
+  stabilization_delay: 5
+
+  # Cria logs detalhados de cada execução
+  logging_enabled: true
+
+  # Mostra barra de progresso e saída colorida
+  verbose_cli: true
+
+# ---------------------------------------------------------------
+# Configuração da Inteligência Artificial
+# ---------------------------------------------------------------
+ai:
+  # Escolhe o modo de processamento de IA: api ou local
+  mode: "api"
+
+  # Se usar modo "api", escolha o provedor de modelo
+  provider: "huggingface"  # opções: openai, huggingface, mistral, local
+
+  # Nome do modelo (dependendo do provedor)
+  model:
+    huggingface: "facebook/bart-large-mnli"     # para classificação de texto
+    openai: "gpt-4o-mini"                       # substitua pelo modelo desejado
+    mistral: "mistralai/mixtral-8x7b"           # se usar endpoint compatível
+    local: "sentence-transformers/all-MiniLM-L6-v2"
+
+  # Quantidade de exemplos enviados por requisição (apenas visual)
+  batch_size: 10
+
+  # Permitir classificação semântica dinâmica (agrupamento automático)
+  auto_label_discovery: true
+
+  # Caminho de cache de resultados da IA
+  cache_file: "C:/Users/Miller/Organized/.ai_cache.json"
+
+# ---------------------------------------------------------------
+# Labels
+# ---------------------------------------------------------------
+labels:
+  # Labels padrão (sempre carregadas)
+  default_labels:
+    - documento
+    - imagem
+    - vídeo
+    - música
+    - instalador
+    - jogo
+    - launcher
+    - diversos
+
+  # Labels opcionais criadas pelo usuário
+  user_labels:
+    - biologia
+    - programação
+    - finanças pessoais
+    - planejamento
+    - faculdade
+
+  # Limite de labels analisadas por vez (evita prompts longos)
+  max_labels_per_request: 8
+
+  # Permitir que o sistema crie novas labels emergentes automaticamente
+  allow_auto_generated_labels: true
+
+# ---------------------------------------------------------------
+# Segurança
+# ---------------------------------------------------------------
 security:
+  # Diretórios proibidos (nenhuma ação será executada neles)
   blacklist:
     - "C:/Program Files"
     - "C:/Windows"
     - "C:/Users/Miller/AppData"
-  dry_run_enabled_by_default: true
+    - "C:/Users/Miller/.config"
+    - "/usr"
+    - "/etc"
+    - "/bin"
 
-classification:
-  use_ai: true
-  fallback: heuristics
-  default_labels: ["documento", "instalador", "jogo", "launcher", "imagem", "vídeo", "música"]
+  # Permitir mover apenas arquivos de usuários normais
+  restrict_to_user_dirs: true
+
+  # Confirmar ações perigosas
+  confirm_before_apply: true
+
+  # Backup antes de grandes operações
+  backup_before_batch: true
+
+# ---------------------------------------------------------------
+# Logs e Auditoria
+# ---------------------------------------------------------------
+logging:
+  # Caminho principal de logs
+  log_folder: "C:/Users/Miller/Organized/logs"
+
+  # Log em JSON detalhado
+  json_log: true
+
+  # Quantidade máxima de logs mantidos
+  keep_last_n: 30
+
+  # Nome do arquivo de log atual
+  current_log: "session.log"
+
+# ---------------------------------------------------------------
+# Configurações de Rede e API
+# ---------------------------------------------------------------
+api:
+  # Local do arquivo .env para armazenar chaves
+  env_file: ".env"
+
+  # Timeout (segundos) para requisições externas
+  timeout: 30
+
+  # Repetir tentativa em caso de erro de conexão
+  retries: 2
+
+  # URL customizada de endpoint (opcional)
+  base_url: null
+
+# ---------------------------------------------------------------
+# Desenvolvimento
+# ---------------------------------------------------------------
+dev:
+  debug_mode: false
+  reload_on_change: false
