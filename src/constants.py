@@ -1,0 +1,9 @@
+DRY = "dry"
+ACTIVE = "active"
+APPLY = "apply"
+
+MOVE = "move"
+COPY = "copy"
+
+ALLOWED_MODES = {DRY, ACTIVE, APPLY}
+ALLOWED_MOVE_STRATEGIES = {MOVE, COPY}

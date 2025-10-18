@@ -117,5 +117,8 @@ O autor não se responsabiliza por eventuais danos decorrentes do uso sem revis�
 
 ## Resumo
 Um organizador CLI com inteligência, seguro por design, capaz de manter suas pastas limpas sem que você precise mover um único arquivo manualmente.
+
+## Futuro
+Ideia de fazer isso com os favoritos do Chrome também
 ```
 

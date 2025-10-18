@@ -11,17 +11,17 @@
 paths:
   # Quais pastas monitorar (pode ser mais de uma)
   watch_folders:
-    - "C:/Users/Miller/Downloads"
-    - "C:/Users/Miller/Desktop"
+    - "D:/Teste/Downloads"
+    - "D:/Teste/Other"
 
   # Onde salvar os arquivos organizados
-  output_folder: "C:/Users/Miller/Organized"
+  output_folder: "D:/Teste/Organized"
 
   # Pasta temporária (opcional)
-  temp_folder: "C:/Users/Miller/Organized/_temp"
+  temp_folder: "D:/Teste/Organized/_temp"
 
   # Pasta para arquivos duvidosos (classificação de baixa confiança)
-  quarantine_folder: "C:/Users/Miller/Organized/Quarentena"
+  quarantine_folder: "D:/Teste/Organized/Quarentena"
 
 # ---------------------------------------------------------------
 # Comportamento e Execução
