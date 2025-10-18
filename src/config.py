@@ -1,14 +1,20 @@
 from constants import ALLOWED_MODES, ALLOWED_MOVE_STRATEGIES
 from pathlib import Path
 from dataclasses import dataclass
+from helpers.base_classes import Singleton
 from utils.file_readers import YamlReader
 
 
-class UserConfig:
-    def __init__(self, path: str = "config.yaml"):
-        reader = YamlReader(path)
+class UserConfig(Singleton):
+
+    def __init__(self, path: str):
+        self.path = path
+        super().__init__()
+
+    def setup(self):
+        reader = YamlReader(self.path)
         if not isinstance(reader.data, dict):
-            raise ValueError(f"Invalid config at {path}")
+            raise ValueError(f"Invalid config at {self.path}")
         self.config_dict = reader.data
         self.ai = AIConfig(self.config_dict)
         self.behavior = BehaviorConfig.from_dict(self.config_dict)

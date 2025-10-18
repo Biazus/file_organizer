@@ -1,6 +1,8 @@
 from config import UserConfig
+from organizer import TaskManager
 
 if __name__ == "__main__":
     conf = UserConfig("config.yaml")
-    print(conf.behavior.mode_default)
-    print(conf.folder)
+    TaskManager(conf).start()
+    print(type(conf.behavior))
+    print(type(conf.folder))
