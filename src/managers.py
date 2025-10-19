@@ -15,6 +15,10 @@ logger = logging.getLogger(__name__)
 
 
 class WatcherManager:
+    """
+    Should run when behavior mode is set to active. Watch list of folders and
+    actively look for a place to store
+    """
     def __init__(self, user_config: UserConfig):
         self.directory = Path(user_config.folder.watch_folders)  # TODO multiple folders
         self.event_handler = FileHandler()

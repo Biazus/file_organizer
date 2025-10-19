@@ -10,7 +10,6 @@ class PathReader:
         self.path = path
 
 
-
 class TaskManager:
     """ get files / folders, read them, build new structure"""
     def __init__(self, config):
@@ -18,7 +17,6 @@ class TaskManager:
             logger.error("No config file")
             raise RuntimeError("No config found. Aborting")
         self.user_config = config
-
         self.monitoring_system = self._get_monitoring_system()
 
     #factory

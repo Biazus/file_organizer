@@ -44,8 +44,8 @@ class FileHandler:
                 for name in files:
                     file_list.append(root_path / name)
         logger.info("Found %d files in %d folders", len(file_list), len(directory_list))
-        logger.debug("Directory list (first 100): %s", directory_list[:100])
-        logger.debug("File list (first 100): %s", file_list[:100])
+        logger.info("Directory list (first 50): %s", directory_list[:50])
+        logger.info("File list (first 50): %s", file_list[:50])
         return directory_list, file_list
 
     def as_dict(self, path: Path) -> Optional[FileInfo]:
