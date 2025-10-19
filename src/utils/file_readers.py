@@ -9,11 +9,18 @@ from data import FileInfo
 
 logger = logging.getLogger(__name__)
 
+
 class YamlReader:
+    """
+    Reads a YAML document from disk on initialization using yaml.safe_load.
+    Args:
+        path (str): Filesystem path to the YAML file to load.
+    """
+
     data: dict = None
 
     def __init__(self, path: str):
-        with open(path, 'r') as file:
+        with open(path, "r") as file:
             try:
                 self.data = yaml.safe_load(file)
             except yaml.YAMLError as exc:
@@ -22,12 +29,27 @@ class YamlReader:
 
 class FileHandler:
     """
-    Collect file info/metadata
+    Collect and summarize basic filesystem metadata.
+
+    This handler:
+    - Recursively walks one or more folders, optionally excluding specific
+      directories, and returns the discovered directories and files.
+    - Converts a Path to a FileInfo record with path, filename, filesize, and
+      filetype (lowercased suffix).
     """
+
     def __init__(self):
         pass
 
-    def retrieve_files_from_folder(self, folders: Iterable[Path], exclude_dirs: Iterable[Path] = ()) -> tuple[list[Path], list[Path]]:
+    def retrieve_files_from_folder(
+        self, folders: Iterable[Path], exclude_dirs: Iterable[Path] = ()
+    ) -> tuple[list[Path], list[Path]]:
+        """
+        Walk folders, skipping excluded dirs. Returns (directories, files) as lists of Path. Logs traversal errors and a brief summary.
+        :param folders:
+        :param exclude_dirs:
+        :return:
+        """
         excluded = {Path(p).resolve() for p in exclude_dirs}
         directory_list: list[Path] = []
         file_list: list[Path] = []
@@ -55,12 +77,14 @@ class FileHandler:
             if not p.is_file():
                 return None
             st = p.stat()
-            return FileInfo(**{
-                "path": str(p),
-                "filename": p.name,
-                "filesize": st.st_size,
-                "filetype": p.suffix.lower(),
-            })
+            return FileInfo(
+                **{
+                    "path": str(p),
+                    "filename": p.name,
+                    "filesize": st.st_size,
+                    "filetype": p.suffix.lower(),
+                }
+            )
         except (FileNotFoundError, PermissionError, OSError) as e:
             logger.warning("Skipping %s (%s)", path, e)
             return None

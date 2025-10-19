@@ -11,7 +11,14 @@ class PathReader:
 
 
 class TaskManager:
-    """ get files / folders, read them, build new structure"""
+    """
+    Coordinate file discovery/monitoring based on the provided configuration.
+    Selects a manager class according to behavior.mode_default:
+    - "dry" -> DryManager
+    - "active" -> WatcherManager
+    and delegates execution to the selected manager
+    """
+
     def __init__(self, config):
         if config is None:
             logger.error("No config file")
@@ -19,15 +26,14 @@ class TaskManager:
         self.user_config = config
         self.monitoring_system = self._get_monitoring_system()
 
-    #factory
     def _get_monitoring_system(self):
-        if self.user_config.behavior.mode_default == "dry":
-            return DryManager
-        elif self.user_config.behavior.mode_default == "active":
+        if self.user_config.behavior.mode_default == "active":
             return WatcherManager
+        return DryManager
 
     def start(self):
         self.monitoring_system(self.user_config).start()
+
 
 class Task:
     def __init__(self, *args, **kwargs):
@@ -35,4 +41,3 @@ class Task:
 
     def run_thread(self):
         pass
-

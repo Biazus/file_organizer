@@ -16,9 +16,19 @@ logger = logging.getLogger(__name__)
 
 class WatcherManager:
     """
-    Should run when behavior mode is set to active. Watch list of folders and
-    actively look for a place to store
+    Manages a watchdog observer to monitor a configured directory for file system changes.
+
+    Initialized with a UserConfig, sets up a FileHandler and an Observer, and monitors the
+    configured watch directory. Calling run() schedules the handler (non-recursive),
+    starts the observer, and blocks until interrupted; on interruption, the observer is
+    stopped and joined.
+    Args:
+        user_config (UserConfig): Loaded configuration containing folder paths.
+    Notes:
+        Currently monitors a single directory and prints status messages to stdout.
+
     """
+
     def __init__(self, user_config: UserConfig):
         self.directory = Path(user_config.folder.watch_folders)  # TODO multiple folders
         self.event_handler = FileHandler()
@@ -40,6 +50,20 @@ class WatcherManager:
 
 
 class DryManager:
+    """
+    Manage discovery and metadata collection for configured watch folders.
+
+    On start(), scans all watch_folders to populate directory_list and file_list,
+    then builds file_collection by extracting FileInfo for each file concurrently.
+    Concurrency uses a thread pool sized as min(64, (os.cpu_count() or 4) * 5).
+    Progress and issues are logged via the module logger, and FileHandler performs
+    traversal and file stat reads.
+
+    Args:
+        user_config (UserConfig): Configuration providing folder.watch_folders.
+
+    """
+
     def __init__(self, user_config: UserConfig):
         self.watch_folders = user_config.folder.watch_folders
         self.directory_list: list[Path] = []
@@ -65,6 +89,15 @@ class DryManager:
         #    task.run_thread()
 
     def collect_all_objects(self):
+        """
+        Populate directory and file lists from the configured watch folders.
+
+        The function logs the operation, walks all watch folders using FileHandler,
+        and assigns `directory_list` and `file_list` accordingly.
+
+        Returns:
+        - None
+        """
         logger.info("Collecting all objects from folders %s", self.watch_folders)
         self.directory_list, self.file_list = (
             self.file_handler.retrieve_files_from_folder(self.watch_folders)
