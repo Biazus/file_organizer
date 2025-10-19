@@ -1,6 +1,6 @@
-from managers import DryManager, WatcherManager
-
 import logging
+
+from managers import DryManager, WatcherManager
 
 logger = logging.getLogger(__name__)
 

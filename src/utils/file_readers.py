@@ -1,9 +1,11 @@
-import yaml
 import logging
-from typing import List, Iterable, Optional, TypedDict
-from pathlib import Path
-from data import FileInfo
 import os
+from pathlib import Path
+from typing import Iterable, List, Optional, TypedDict
+
+import yaml
+
+from data import FileInfo
 
 logger = logging.getLogger(__name__)
 

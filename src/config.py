@@ -1,11 +1,10 @@
 import logging
+from dataclasses import dataclass
+from pathlib import Path
 
 from constants import ALLOWED_MODES, ALLOWED_MOVE_STRATEGIES
-from pathlib import Path
-from dataclasses import dataclass
 from helpers.base_classes import Singleton
 from utils.file_readers import YamlReader
-
 
 logger = logging.getLogger(__name__)
 
