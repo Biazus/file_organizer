@@ -1,9 +1,13 @@
+import logging
+
 from constants import ALLOWED_MODES, ALLOWED_MOVE_STRATEGIES
 from pathlib import Path
 from dataclasses import dataclass
 from helpers.base_classes import Singleton
 from utils.file_readers import YamlReader
 
+
+logger = logging.getLogger(__name__)
 
 class UserConfig(Singleton):
 
@@ -15,6 +19,8 @@ class UserConfig(Singleton):
         reader = YamlReader(self.path)
         if not isinstance(reader.data, dict):
             raise ValueError(f"Invalid config at {self.path}")
+
+        logger.info(f"Config file found: {reader.data}")
         self.config_dict = reader.data
         self.ai = AIConfig(self.config_dict)
         self.behavior = BehaviorConfig.from_dict(self.config_dict)
